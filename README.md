@@ -8,6 +8,7 @@ Use Spring Integration, Spring Kafka projects.
 
 Пример отправляемых сообщений:
 {“field1”: “aaa”, “field2”: 123}
+{"name": "John", "age": 30, "isAdmin": false, "courses": ["html", "css", "js"], "wife": null}
 
 Пример сообщения на выходе:
 {"field1":"aaa","field2":123,"Timestamp":"2019-11-13 09:55:47.002"}
