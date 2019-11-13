@@ -53,13 +53,13 @@ public class AppConfig {
 				get();
 	}
 
-	//creating new topic for outbound flow
+	//creating new topic for inbound flow
 	@Bean
 	public NewTopic topic() {
 		return new NewTopic(newKafkaTopic, 1, (short) 1);
 	}
 	
-	//creating new topic for inbound flow
+	//creating new topic for outbound flow
 	@Bean
 	public NewTopic initialTopic() {
 		return new NewTopic(initialKafkaTopic, 1, (short) 1);
