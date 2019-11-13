@@ -33,11 +33,12 @@ public class AppConfig {
 	@Bean
 	public IntegrationFlow fromKafkaFlow(ConsumerFactory<String, String> consumerFactory) {
 		return IntegrationFlows.from(Kafka.messageDrivenChannelAdapter(consumerFactory, initialKafkaTopic))
-				.<MyModel, MyModelWithTimestamp>transform((p) -> {
-					MyModelWithTimestamp mm= new MyModelWithTimestamp();
-					mm.setMessageString(p.getMessageString());
-					mm.setTimestampString(Timestamp.from(Instant.now()).toString());
-					return mm;
+				.<MyModelWithTimestamp, MyModelWithTimestamp>transform((p) -> {
+					//MyModelWithTimestamp mm= new MyModelWithTimestamp();
+					//mm.setMessage(p.getMessage());
+					//mm.setTimestamp(Timestamp.from(Instant.now()).toString());
+					p.setTimestamp(Timestamp.from(Instant.now()).toString());
+					return p;
 				})
 				
 				// sending output to the direct channel myChannel

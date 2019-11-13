@@ -7,20 +7,20 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("serial")
 @Component
 public class MyModelWithTimestamp implements Serializable {
-	private String messageString;
-	private String timestampString;
+	private String message;
+	private String timestamp;
 	
-	public String getMessageString() {
-		return messageString;
+	public String getMessage() {
+		return message;
 	}
-	public void setMessageString(String messageString) {
-		this.messageString = messageString;
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	public String getTimestampString() {
-		return timestampString;
+	public String getTimestamp() {
+		return timestamp;
 	}
-	public void setTimestampString(String timestampString) {
-		this.timestampString = timestampString;
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
 	}
 	
 	

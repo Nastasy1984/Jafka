@@ -29,7 +29,7 @@ public class SimpleProducerForTesting {
 	private Properties props;
 	
 	@Autowired
-	private Producer<String, MyModel> producer;
+	private Producer<String, MyModelWithTimestamp> producer;
 
 	@Bean (name="myProps")
 	public Properties props() {
@@ -44,19 +44,19 @@ public class SimpleProducerForTesting {
 	
 	@Bean
      //creating producer using properties
-     public Producer<String, MyModel> producer (){
+     public Producer<String, MyModelWithTimestamp> producer (){
 		return new KafkaProducer<>(props);
 	}
 	
 	public void sendProbeMessages() {
 		//sending first probe message
-		MyModel mmModel = new MyModel();
-		mmModel.setMessageString("HELLO!!!");
-        producer.send(new ProducerRecord<String, MyModel>(initialKafkaTopic, mmModel));
-        MyModel model = new MyModel();
+		MyModelWithTimestamp mmModel = new MyModelWithTimestamp();
+		mmModel.setMessage("HELLO!!!");
+        producer.send(new ProducerRecord<String, MyModelWithTimestamp>(initialKafkaTopic, mmModel));
+        MyModelWithTimestamp model = new MyModelWithTimestamp();
 		for (int i = 0; i < 10; i++) {
-			model.setMessageString("TEST MESSAGE NUMBER " + i);
-			producer.send(new ProducerRecord<String, MyModel>(initialKafkaTopic, model));
+			model.setMessage("TEST MESSAGE NUMBER " + i);
+			producer.send(new ProducerRecord<String, MyModelWithTimestamp>(initialKafkaTopic, model));
 		}
 		producer.close();
 	}
