@@ -34,15 +34,14 @@ public class AppConfig {
 	@Bean
 	public IntegrationFlow fromKafkaFlow(ConsumerFactory<String, Object> consumerFactory) {
 		return IntegrationFlows.from(Kafka.messageDrivenChannelAdapter(consumerFactory, initialKafkaTopic))
-				.<HashMap<String, Object>, HashMap<String, Object>>transform((p) -> {
-					//MyModelWithTimestamp mm= new MyModelWithTimestamp();
-					//mm.setMessage(p.getMessage());
-					//mm.setTimestamp(Timestamp.from(Instant.now()).toString());
+				//.<HashMap<String, Object>, HashMap<String, Object>>transform((p) -> {
+					//p.put("Timestamp", Timestamp.from(Instant.now()).toString());
+					//return p;
+				//})
+				.<HashMap<String, Object>>handle((p, h) -> {
 					p.put("Timestamp", Timestamp.from(Instant.now()).toString());
-					//p.setTimestamp(Timestamp.from(Instant.now()).toString());
 					return p;
 				})
-				
 				// sending output to the direct channel myChannel
 				.channel("myChannel").get();
 	}
