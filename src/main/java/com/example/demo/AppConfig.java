@@ -32,9 +32,9 @@ public class AppConfig {
 	private String newKafkaTopic;
 
 	@Bean
-	public IntegrationFlow fromKafkaFlow(ConsumerFactory<String, String> consumerFactory) {
+	public IntegrationFlow fromKafkaFlow(ConsumerFactory<String, Object> consumerFactory) {
 		return IntegrationFlows.from(Kafka.messageDrivenChannelAdapter(consumerFactory, initialKafkaTopic))
-				.<HashMap<String, String>, HashMap<String, String>>transform((p) -> {
+				.<HashMap<String, Object>, HashMap<String, Object>>transform((p) -> {
 					//MyModelWithTimestamp mm= new MyModelWithTimestamp();
 					//mm.setMessage(p.getMessage());
 					//mm.setTimestamp(Timestamp.from(Instant.now()).toString());
@@ -48,7 +48,7 @@ public class AppConfig {
 	}
 
 	@Bean
-	public IntegrationFlow outFlow(KafkaTemplate<String, HashMap<String, String>> kafkaTemplate) {
+	public IntegrationFlow outFlow(KafkaTemplate<String, HashMap<String, Object>> kafkaTemplate) {
 		return IntegrationFlows.from("myChannel")
 				.handle(Kafka.outboundChannelAdapter(kafkaTemplate).topic(newKafkaTopic)).
 				get();

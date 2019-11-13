@@ -60,6 +60,9 @@ public class SimpleProducerForTesting {
 		
 		probeMessageString = "{\"field1\": \"aaa\", \"field2\": 123, \"Timestamp\": 12312413252534}";
 		producer.send(new ProducerRecord<String, String>(initialKafkaTopic, probeMessageString));
+		
+		probeMessageString = "{\"name\": \"Vasya\", \"age\": 30, \"isAdmin\": false, \"courses\": [\"html\", \"css\", \"js\"], \"wife\": null}";
+		producer.send(new ProducerRecord<String, String>(initialKafkaTopic, probeMessageString));
 		producer.close();
 	}
 
