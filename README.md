@@ -6,8 +6,9 @@ Develop Spring Boot application which consumes message (in JSON format) from top
 appends payload of that message with handling timestamp and output result as JSON in another Kafka topic. 
 Use Spring Integration, Spring Kafka projects.
 
-Пример отправляемых сообщений:
+Примеры отправляемых сообщений:
 {“field1”: “aaa”, “field2”: 123}
+
 {"name": "John", "age": 30, "isAdmin": false, "courses": ["html", "css", "js"], "wife": null}
 
 Пример сообщения на выходе:
