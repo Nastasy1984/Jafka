@@ -6,5 +6,5 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MySerializer extends JsonSerializer<HashMap<String, Object>>{
+public class MySerializer extends JsonSerializer<MyModelWithTimestamp>{
 }
