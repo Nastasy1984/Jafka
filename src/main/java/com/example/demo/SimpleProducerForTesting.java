@@ -55,7 +55,6 @@ public class SimpleProducerForTesting {
 
 		for (int i = 0; i < 3; i++) {
 			probeMessageString = "{\"message\": \"HELLO" + " " + i + "\"}";
-			System.out.println(probeMessageString);
 			producer.send(new ProducerRecord<String, String>(initialKafkaTopic, probeMessageString));
 		}
 		
