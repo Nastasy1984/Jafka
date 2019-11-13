@@ -2,6 +2,7 @@ package com.example.demo;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashMap;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,11 +34,12 @@ public class AppConfig {
 	@Bean
 	public IntegrationFlow fromKafkaFlow(ConsumerFactory<String, String> consumerFactory) {
 		return IntegrationFlows.from(Kafka.messageDrivenChannelAdapter(consumerFactory, initialKafkaTopic))
-				.<MyModelWithTimestamp, MyModelWithTimestamp>transform((p) -> {
+				.<HashMap<String, String>, HashMap<String, String>>transform((p) -> {
 					//MyModelWithTimestamp mm= new MyModelWithTimestamp();
 					//mm.setMessage(p.getMessage());
 					//mm.setTimestamp(Timestamp.from(Instant.now()).toString());
-					p.setTimestamp(Timestamp.from(Instant.now()).toString());
+					p.put("Timestamp", Timestamp.from(Instant.now()).toString());
+					//p.setTimestamp(Timestamp.from(Instant.now()).toString());
 					return p;
 				})
 				
@@ -46,7 +48,7 @@ public class AppConfig {
 	}
 
 	@Bean
-	public IntegrationFlow outFlow(KafkaTemplate<String, MyModelWithTimestamp> kafkaTemplate) {
+	public IntegrationFlow outFlow(KafkaTemplate<String, HashMap<String, String>> kafkaTemplate) {
 		return IntegrationFlows.from("myChannel")
 				.handle(Kafka.outboundChannelAdapter(kafkaTemplate).topic(newKafkaTopic)).
 				get();

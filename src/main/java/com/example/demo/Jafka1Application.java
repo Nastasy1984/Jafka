@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Jafka1Application implements CommandLineRunner{
-
+//public class Jafka1Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Jafka1Application.class, args);
 	}

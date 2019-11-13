@@ -29,7 +29,7 @@ public class SimpleProducerForTesting {
 	private Properties props;
 	
 	@Autowired
-	private Producer<String, MyModelWithTimestamp> producer;
+	private Producer<String, String> producer;
 
 	@Bean (name="myProps")
 	public Properties props() {
@@ -38,26 +38,29 @@ public class SimpleProducerForTesting {
 		props.put("bootstrap.servers", HOST);
 		props.put("acks", "all");
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		props.put("value.serializer", "com.example.demo.MySerializer");
+		props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		return props;
 	}
 	
 	@Bean
      //creating producer using properties
-     public Producer<String, MyModelWithTimestamp> producer (){
+     public Producer<String, String> producer (){
 		return new KafkaProducer<>(props);
 	}
 	
 	public void sendProbeMessages() {
 		//sending first probe message
-		MyModelWithTimestamp mmModel = new MyModelWithTimestamp();
-		mmModel.setMessage("HELLO!!!");
-        producer.send(new ProducerRecord<String, MyModelWithTimestamp>(initialKafkaTopic, mmModel));
-        MyModelWithTimestamp model = new MyModelWithTimestamp();
-		for (int i = 0; i < 10; i++) {
-			model.setMessage("TEST MESSAGE NUMBER " + i);
-			producer.send(new ProducerRecord<String, MyModelWithTimestamp>(initialKafkaTopic, model));
+		String probeMessageString = "{\"message\": \"HELLO\"}";
+        producer.send(new ProducerRecord<String, String>(initialKafkaTopic, probeMessageString));
+
+		for (int i = 0; i < 3; i++) {
+			probeMessageString = "{\"message\": \"HELLO" + " " + i + "\"}";
+			System.out.println(probeMessageString);
+			producer.send(new ProducerRecord<String, String>(initialKafkaTopic, probeMessageString));
 		}
+		
+		probeMessageString = "{\"field1\": \"aaa\", \"field2\": 123, \"Timestamp\": 12312413252534}";
+		producer.send(new ProducerRecord<String, String>(initialKafkaTopic, probeMessageString));
 		producer.close();
 	}
 
