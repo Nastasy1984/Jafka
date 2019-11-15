@@ -6,19 +6,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Jafka1Application implements CommandLineRunner{
-//public class Jafka1Application {
+public class Jafka1Application implements CommandLineRunner {
 	public static void main(String[] args) {
-		
+
 		SpringApplication.run(Jafka1Application.class, args);
 	}
-	
-	@Autowired
-    private SimpleProducerForTesting sender;
 
-    @Override
-    public void run(String... strings) throws Exception {
-        sender.sendProbeMessages();
-    }
-	
+	@Autowired
+	private SimpleProducerForTesting sender;
+
+	@Override
+	public void run(String... strings) throws Exception {
+		sender.sendProbeMessages();
+	}
+
 }

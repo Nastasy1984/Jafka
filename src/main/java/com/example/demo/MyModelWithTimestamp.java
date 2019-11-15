@@ -1,12 +1,6 @@
 package com.example.demo;
 
-import java.io.Serializable;
-
-import org.springframework.stereotype.Component;
-
-@SuppressWarnings("serial")
-@Component
-public class MyModelWithTimestamp implements Serializable {
+public class MyModelWithTimestamp{
 	private String message;
 	private String timestamp;
 	
@@ -22,5 +16,4 @@ public class MyModelWithTimestamp implements Serializable {
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
-	
 }

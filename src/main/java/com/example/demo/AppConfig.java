@@ -4,11 +4,15 @@ import java.sql.Timestamp;
 import java.time.Instant;
 
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.kafka.dsl.Kafka;
@@ -22,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @ConfigurationProperties("kafka")
 @EnableKafka
+@EnableIntegration
 public class AppConfig {
 	
 	@Value("${kafka.topic.initial-topic}")
@@ -29,7 +34,7 @@ public class AppConfig {
 
 	@Value("${kafka.topic.new-topic}")
 	private String newKafkaTopic;
-
+	
 	@Bean
 	public IntegrationFlow fromKafkaFlow(ConsumerFactory<String, String> consumerFactory) {
 		return IntegrationFlows.from(Kafka.messageDrivenChannelAdapter(consumerFactory, initialKafkaTopic))
@@ -72,33 +77,4 @@ public class AppConfig {
 		return new ObjectMapper();
 	}
 	
-	//just for probe
-	/*
-	@Bean
-	public IntegrationFlow fromKafkaFlow(ConsumerFactory<String, String> consumerFactory) {
-		return IntegrationFlows.from(Kafka.messageDrivenChannelAdapter(consumerFactory, initialKafkaTopic))
-				// .<String, String>transform(String::toUpperCase)
-				// .<String, String>transform((p) -> p + "YYY")
-				// .<String>handle((p, h) -> p + "VAS")
-				//.<String>handle((p, h) -> p + Timestamp.from(Instant.now()))
-				//deleting the last "}" and adding field with timestamp
-				.<String>handle((p, h) -> {
-					String toAdd = ", \"timestamp\": " + Timestamp.from(Instant.now()) + "}";
-					return p.substring(0, p.length()) + toAdd;
-				})
-				.<String, Integer>transform((p) -> {
-					return new Integer(5);
-				})
-				//получаем объект типа MyModel переводим его в объект MyModelWithTimestamp беря сообщение из старого и добавляя поле TimeStamp
-				.<MyModel, MyModelWithTimestamp>transform((p) -> {
-					MyModelWithTimestamp mm= new MyModelWithTimestamp();
-					mm.setMessageString(p.getMessageString());
-					mm.setTimestampString(Timestamp.from(Instant.now()).toString());
-					return mm;
-				})
-				
-				// sending output to the direct channel myChannel
-				.channel("myChannel").get();
-	}*/
-
 }
